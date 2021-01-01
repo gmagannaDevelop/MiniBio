@@ -1,0 +1,6 @@
+*.log
+*.html
+*.pdf
+.Rhistory
+.RData
+reference
