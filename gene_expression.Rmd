@@ -142,7 +142,7 @@ regulation of certain steps is much more common than the regulation of others.
 Transcription must be therefore 
 explicación a grosso modo de la transcripción
 
-## Procaryote 
+## Procaryotic Transcription
 
 The process of gene expression or gene regulation is mainly mediated via transcription.
 We must therefore understand the bases of this process to discuss gene expression.
@@ -162,7 +162,8 @@ Those located on the same DNA fragment which they regulated are called
 _**cis-elements**_. On the other hand, proteins that bind to specific sites 
 of the sequence either to enhance or repress the expression of the gene 
 in question are called _**trans-elements**_ for they are not necessarily
-encoded on the same DNA region.
+encoded on the same DNA region. These proteins are also called 
+_transcription factors_.
 
 ![Simplified schematic representation of the _Lac Operon_](figures/my_lac)
 
@@ -199,11 +200,11 @@ is available or when lactose is unavailable would be a waste of energy.
 Failing to express this enzyme in the converse situation would probably
 lead the cell to an "energy crisis" which could result in its death. 
 Through the history of evolution by means of natural selection, genes that
-code for proteins which prove useful in diverse contexts are conserved and
+code for proteins which prove to be useful in diverse contexts are conserved and
 carried on across generations.
 The cell has readily available "recipes" on how to react to stimuli it has 
 never previously encountered, encoded in its genome. 
-The dynamic selection of which ones to use at any time is the process 
+The dynamic selection of which ones to use at any given time is the process 
 of gene regulation.                                                                           
 \newpage
 
@@ -231,7 +232,7 @@ then rapidly converted to an active protein when the conditions warrant.
 hablar a detalle, AK lectures
 
 \newpage
-## Eucaryote
+## Eucaryotic Transcription
 
 Eukaryotic organisms can be much more complex than prokaryotic ones. 
 This can be easily noted given that in multicellular eukaryotic organisms, 
@@ -241,21 +242,75 @@ Cells from a human's femoral biceps, their liver and brain are all radically
 different. This can be observed directly via a microscope. 
 This diversity relies as we have mentioned before, on gene expression regulation.
 
-As with prokaryotes gene regulation has a general regulation mechanism in 
-eukaryotes, albeit diverse mechanisms may be used in specific contexts.
+As in prokaryotes, gene regulation has a general mechanism in eukaryotes,
+albeit alternatives may be used in specific contexts.
 This general case is as we previously deduced, transcriptional regulation.
 
 In order to explain eukaryotic transcription and its regulation, we must
 first understand the basic structure of an eukaryotic gene which significantly
-diverges from that of its prokaryotic counter part.
+diverges from that of its prokaryotic counterpart.
 
 ![Schematic representation of an eukaryotic gene](figures/eukarya1)
 
-Analo
+Analogously to prokaryotes, eukaryotic genes contain regulatory sections and coding sections.
+Nonetheless, the coding region of an eukaryotic gene is not the DNA equivalent
+of the final mRNA transcript. 
+The coding part of the gene contains interspersed coding and non-coding DNA fragments. 
+The former are called **exons**, the later **introns**. 
+The removal of introns to produce the final translatable mRNA product is
+a form of post-transcriptional modification called _splicing_. 
+This happens within the nucleus, hence the name *in*trons (for the 
+fragments which remain inside).
+Moving upstream along the gene shown in the previous figure, we 
+find the **transcription start site**, 
+where _RNA polymerase II_ (**Pol II**) binds to.
+RNA polymerase II is a complex made up of 12 proteins which together carry
+out transcription.
+Eukaryotes have more than one type of RNA polymerase, but these are not
+involved in the expression of most genes. 
+_RNA polymerase I_ only transcribes ribosomal RNA (rRNA). 
+_RNA polymerase III_ transcribes genes that code for ribosomal
+5S rRNA, transfer RNA (tRNA) and other small RNAs.
+
+Within the _promoter region_ we generally find two distinct types of promoters.
+First, we find the _core promoter_. 
+This is a sequence of DNA, about 40 bases upstream of the start site. 
+It is found in all eukaryotic genes. 
+Different core promoters exists, but a common example is the _TATA box_.
+Afterwards we observe _upstream promoters_ which are located further away
+from the coding region of the gene. 
+Unlike the core promoter, these are specific. 
+They bind to different activator or repressor proteins (transcription factors) 
+conferring specificity to the process of gene expression regulation. 
+
+Finally, we have the _enhancer_. 
+It is found furthest away from the coding section of the gene 
+(up to thousands of bases away), and is not restricted to be located upstream. 
+The enhancer can also bind to different transcription factors. 
+When this happens, the enhancer loops around and binds to the protein complex
+found on the promoter. 
+This interaction stimulates transcription of the gene, hence the name _enhancer_.
+
+
+Regarding transcription factors, we can also make a distinction between types. 
+_General transcription factors_ (**GTFs**) are named TFIIA, TFIIB, 
+TFIID (*TATA-binding protein* **TBP**),
+TFIIE, TFIIF, and TFIIH based on the protein fractions they purified in. 
+They are called _general_ because together with _Pol II_, they are **necessary
+and sufficient for basal transcription** of many genes. 
+GTFs and Pol II then form the _preinitiation complex_ (**PIC**) by protein-protein
+interactions. 
+An important remark is that experimental evidence shows that these
+known GTFs are insufficient to transcribe DPE[^a]-containing genes. 
+In addition to this, it has been founf that TBP paralogues are involved in 
+distinct biological processes, such as embryonic development, differentiation 
+and morphogenesis.
 
 ## Transcriptional networks, current issues, data mining, etc
 
 ## Conclusion : biologie integrative, etc.
+
+[^a]: Downstream Promoter Element
 
 \newpage
 # Glossary
