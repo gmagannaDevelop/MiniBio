@@ -3,17 +3,19 @@ title: "Gene Expression: A current and prospective summary"
 author: "Gustavo Magaña López"
 email: "gustavo.magana-lopez@u-psud.fr"
 date: "30/12/2020"
-header-includes:
-   - \usepackage{wrapfig}
+#header-includes:
+ #  - \usepackage{wrapfig}
 output:
   pdf_document:
+    includes:
+      in_header: "preamble.tex" 
     toc: true
     #toc_depth: 1
     citation_package: biblatex
     #fig_width: 7
     #fig_height: 6
     #fig_caption: true
-bibliography: references.bib
+bibliography: "references.bib"
 nocite: '@*'
 ---
 
@@ -49,35 +51,6 @@ faire l'introduction après.
 
 
 ## The cell's congitive problem
-
-Hello Thomas, nice to see you ! A possible method of gene control could involve the genes for all proteins 
-being present in the fertilised egg. Then, during development, the selective 
-loss of genes which are not required according to the cell/tissue type 
-(in the case of multicellular eukaryotes) would determine gene expression. 
-Under this hypothesis cells would only have _housekeeping genes_ and their 
-characteristic genes. 
-This would eliminate the need for additional means of gene regulation as 
-regards cell differentiation. 
-If this were the general case, the presence/absence of mRNA coding for specific
-proteins in the cytoplasm would be matched in the DNA contents of the nucleus.
-
-\begin{wrapfigure}{l}{5.5cm}
-\caption{A wrapped figure going nicely inside the text.}\label{wrap-fig:1}
-\includegraphics[width=5.5cm]{figures/two_mechanisms}
-\end{wrapfigure} 
-
-A variety of evidence suggests, however, that **selective DNA loss is not a 
-general mechanism of gene control**. This is based on chromosomal, functional,
-and molecular studies. It has to be noted that there are some specific cases 
-in which this mechanism is used (embryonic development of some nematodes, 
-crustaceans, and insects). This will not be discussed as it goes beyond the 
-scope of this summary. 
-
-
-
-<!-- ```{r, echo=FALSE, out.width="25%", fig.cap="A nice image.", fig.align = 'left'}
-knitr::include_graphics("figures/two_mechanisms.png")
-``` -->
 
 The regulation of gene expression is thus, the dynamic link between the quasi
 static information contained in the genome and the vast array of internal metabolic
@@ -158,6 +131,14 @@ lie therefore in the process of _transcription_**.
 
 ### Transcription
 
+Some details about transcription differ between eukaryotes and prokaryotes.
+These will be treated in their respective sections, but in general
+transcription involves the following steps: access of transcription apparatus 
+to DNA, recognition of promoter sequences, initiation of RNA synthesis, 
+elongation of RNA, and termination. 
+Any of these individual steps may be regulated, but in practice, 
+regulation of certain steps is much more common than the regulation of others.
+
 Transcription must be therefore 
 explicación a grosso modo de la transcripción
 
@@ -173,18 +154,104 @@ The core transcription process in prokaryotes is explained by the **operon model
 An _operon_ is a segment of DNA that consists of a regulatory section and 
 a coding section.
 The _regulatory section_ consists of a sequence of DNA with control sites known 
-as the _promoter_ and the _operator_ site.
+as the _promoter_ and the _operator_ sites.
 The _coding section_ contains the gene(s) that code for the polypeptide(s) that
-will make up the protein(s).
+will make up the protein(s). 
+Additionally, a distinction must be made between two types of regulators. 
+Those located on the same DNA fragment which they regulated are called 
+_**cis-elements**_. On the other hand, proteins that bind to specific sites 
+of the sequence either to enhance or repress the expression of the gene 
+in question are called _**trans-elements**_ for they are not necessarily
+encoded on the same DNA region.
+
+![Simplified schematic representation of the _Lac Operon_](figures/my_lac)
+
+The classic example of gene regulation in prokaryotes is the _Lac Operon_. 
+When glucose concentration is high, RNA polymerase binds to the promoter region 
+(1) on the Lac operon and transcribes the mRNA that codes for the repressor protein.
+Once formed, the repressor protein binds to the operator (5) region and blocks the
+RNA polymerase from transcribing the mRNA that codes for $\beta$-galactosidase,
+responsible for catalysing the breakdown of lactose into glucose and galactose.
+
+This occurs because when glucose is available, specially so in high concentrations,
+the cell does not need to use lactose (or other sugars for that matter) as
+an energy source. 
+Thus, there is no need to to express the gene for $\beta$-galactosidase.
+
+However, when the glucose concentration is low and lactose is available, 
+lactose can transform into allolactose, which binds to the repressor protein 
+allosterically. 
+This inactivates the repressor and causes it to detach from the operator.
+At low glucose concentrations, the concentration of cAMP rises and cAMP 
+binds to and activates the _catabolite activator protein_ **CAP**.
+CAP binds to a special site (3) on the Lac operon, which activates the promoter
+for $\beta$-galactosidase. RNA polymerase can now bind to and transcribe the 
+mRNA for $\beta$-galactosidase. 
+
+Under the light of "_cognitive problem of the cell_", the regulation of the 
+_Lac Operon_ has a clear functional role as a response to the availability 
+of different sugars in E. coli's environment. In order to maintain its normal
+activity and ultimately live, the cell needs to obtain energy from ATP. 
+In E. coli this is mainly achieved via glycolysis. 
+If glucose is unavailable, the cell must obtain energy from other sugars 
+found in its vicinity. Expressing the gene for $\beta$-galactosidase when glucose
+is available or when lactose is unavailable would be a waste of energy. 
+Failing to express this enzyme in the converse situation would probably
+lead the cell to an "energy crisis" which could result in its death. 
+Through the history of evolution by means of natural selection, genes that
+code for proteins which prove useful in diverse contexts are conserved and
+carried on across generations.
+The cell has readily available "recipes" on how to react to stimuli it has 
+never previously encountered, encoded in its genome. 
+The dynamic selection of which ones to use at any time is the process 
+of gene regulation.                                                                           
+\newpage
 
 
+Having presented a brief example of a renowned operon, the following table [11]
+clearly summarises different operon types. 
+These are differentiated based on the repression/induction behaviour they exhibit.
 
+| Positive inducible operon | Positive repressible operon | Negative inducible operon | Negative repressible operon |
+|---------------------------|-----------------------------|---------------------------|-----------------------------|
+  | An activator protein turns ON transcription in response to a stimulus/condition | An activator protein is inactivated in response to a stimulus/condition, turning transcription OFF | A repressor protein is inactivated in response to a stimulus/condition, turning transcription turns ON | A repressor protein turns transcription turns OFF in response to a stimulus/condition |
+
+\begin{wrapfigure}{R}{5.5cm}
+  \caption{Comparison of regulatory mechanisms}\label{wrap-fig:1}
+  \includegraphics[width=5.5cm]{figures/two_mechanisms}
+  \vspace{-270pt} % This removes the white box on the second page
+\end{wrapfigure}
+
+Two common regulatory mechanisms serve two separate needs. 
+For an efficient response (one requiring less energy) the gene is often
+regulated at the level of transcription. 
+When a rapid response is needed, a precursor protein is produced in advance and
+then rapidly converted to an active protein when the conditions warrant.
 
 hablar a detalle, AK lectures
 
+\newpage
 ## Eucaryote
 
-hablar a detalle, AK lectures
+Eukaryotic organisms can be much more complex than prokaryotic ones. 
+This can be easily noted given that in multicellular eukaryotic organisms, 
+cells undergo differentiation to acquire specific morphological and 
+physiological characteristics. 
+Cells from a human's femoral biceps, their liver and brain are all radically 
+different. This can be observed directly via a microscope. 
+This diversity relies as we have mentioned before, on gene expression regulation.
+
+As with prokaryotes gene regulation has a general regulation mechanism in 
+eukaryotes, albeit diverse mechanisms may be used in specific contexts.
+This general case is as we previously deduced, transcriptional regulation.
+
+In order to explain eukaryotic transcription and its regulation, we must
+first understand the basic structure of an eukaryotic gene which significantly
+diverges from that of its prokaryotic counter part.
+
+![Schematic representation of an eukaryotic gene](figures/eukarya1)
+
+Analo
 
 ## Transcriptional networks, current issues, data mining, etc
 
@@ -216,8 +283,9 @@ are neutral, having no definable phenotype.
 * **Eukaryotic**: referring to the genome of multicellular organisms, from yeast to humans genes are interrupted by introns.
 * **Prokaryotic**: referring to the single cell organisms such as bacteria, archaebacteria etc, no introns present.
 
+\newpage
 # References
-```{r generateBibliography, results="asis", echo=FALSE}
+```{r generateBibliography, results="asis", echo=FALSE, warning=FALSE}
 suppressMessages(require("bibtex"))
 suppressMessages(require("knitcitations"))
 cleanbib()
