@@ -299,9 +299,23 @@ This is thus a secondary mechanism of transcriptional regulation worth
 mentioning.
 
 ## Transcription factors
-DNA sequences which affect the rate of transcription act by binding 
+DNA sequences which affect the rate of transcription  (promoters) act by binding 
 regulatory proteins (*transcription factors* **TF**). 
-These have a modular structure with different domains which have
+TFs have the capacity to rapidly switch back and forth between 
+active and inactive conformations in function of a signal's intensity.
+A signal can be, for example, the concentration of some small molecule.
+In the case of unicellular organisms, these will be mostly the chemical
+compounds found in the environment and physical properties of the medium such
+as temperature (see the example of [heat shock proteins](https://en.wikipedia.org/wiki/Heat_shock_protein)).
+Moving on to higher eukaryotes, we find integrated communication pathways,
+which rely on differentiated cells which make up numerous complex systems.
+Some cells work as sensors for light, sound, and pressure. 
+All these stimuli orchestrate high precision responses, coordinated by
+endocrine and paracrine secretions together with the nervous system's signals.
+Stimuli follow various signal transduction pathways to finally acquire a
+molecular representation within the cell's cytoplasm. 
+
+TFs have a modular structure with different domains which have
 specific functions such as DNA binding or transcriptional activation.
 Transcription factors can be grouped into families with related DNA binding domains.
 As previously presented in the operon regulation table, TFs can be either activators
@@ -313,49 +327,40 @@ Transcription factors can themselves be regulated by controlling their synthesis
 or their activity. 
 If transcription factors can be controlled by other transcription factors, we ultimately have a big transcriptional network which represents the 
 "*cognitive engine*" of the cell.
-**maybe say that this is the best?**
+
+
 
 \newpage
-## Transciptional Networks
+# Transciptional Networks
 
-To further illustrate th
-```{r libs, message=FALSE, warning=FALSE, include=FALSE}
+```{r processing, message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
+library(igraph)
+set.seed(2)
 gene.names <- read_delim(
   "data/coliInterFullNames.txt", delim=" ", 
   col_types =  cols(X1="i", X2="c", X3="_"),
   col_names = c("num", "name")
 )
-```
 
-```{r lac.selec, include=FALSE, tidy=TRUE}
 lac <- gene.names %>% filter(str_detect(name, "lac"))
-#knitr::kable(lac)
-```
 
-```{r interactions, include=FALSE, tidy=TRUE}
 interactions <- read_delim(
   "data/coliInterFullVec.txt", delim=" ", 
   col_names = c("operon_n", "tf_n", "reg_type")
 )
-#head(interactions, 3)
-```
 
 
-```{r lac.find, include=FALSE}
+full.inter.pregraph <- interactions %>% select(tf_n, operon_n)
+
 # Find lac interactions :
 lac.tf <- interactions %>% filter(operon_n %in% lac$num | tf_n %in% lac$num)
-#lac.tf
-```
 
-```{r secondary, include=FALSE}
 lac.deep.inter.num <- interactions %>% 
   filter(operon_n %in% lac.tf$tf_n | # Get all regulations where lac's TFs are targets
              tf_n %in% lac.tf$tf_n   # Get all operons which are co-regulated 
-        )                            # i.e. all whose expression is regulated by the same TFs
-#dim(lac.deep.inter.num)
-```
-```{r naming, fig.margin=TRUE, include=FALSE}
+        )                            # (expression is regulated by the same TFs)
+
 # Prepare the format
 lac.deep.inter.names <- lac.deep.inter.num %>% 
   select(tf_n, operon_n, reg_type) %>%
@@ -366,10 +371,7 @@ lac.deep.inter.names <- lac.deep.inter.num %>%
 # The data's annotation specifies: 1 activator, 2 repressor, 3 dual.
 lac.deep.activated <- lac.deep.inter.names %>% filter(reg_type %in% c(1, 3))
 lac.deep.repressed <- lac.deep.inter.names %>% filter(reg_type %in% c(2, 3))
-```
 
-```{r the.graph, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
-library(igraph)
 
 lac.deep.pregraph <- lac.deep.inter.names %>% select(tf_n, operon_n)
 lac.act.pregraph <- lac.deep.activated %>% select(tf_n, operon_n) 
@@ -386,14 +388,37 @@ prune_graph <- function(x) delete.vertices(x, which(degree(x) == 0))
 lac.graph.pruned <- prune_graph(lac.graph)
 act.graph.pruned <- prune_graph(act.graph)
 rep.graph.pruned <- prune_graph(rep.graph)
+```
 
-#isolated.nodes <- which(degree(lac.graph) == 0)
-#lac.graph.pruned <- delete.vertices(lac.graph, isolated.nodes)
+To better understand the aforementioned cell's "*cognitive engine*", 
+we need to present some brief definitions.
+In transcriptional networks genes are represented by nodes. 
+The links between the nodes are the transcriptional relationships.
+These tie together target genes and the genes which
+encode their transcription factors. 
+Take for example $X \rightarrow Y$. 
+This means that the protein encoded by gene $X$ is a transcription factor
+which can bind to $Y$'s promoter in order to activate or repress its 
+translation, which ultimately implies controlling its expression.
+
+## E. coli's transcriptional network
+```{r full.network, echo=FALSE, fig.margin=TRUE}
+full.graph <- graph_from_edgelist(as.matrix(full.inter.pregraph), directed = T)
+par(mfrow = c(1,2))
+plot.igraph(
+  full.graph, vertex.color = "green", vertex.size = 5, vertex.label = NA,
+  arrow.size = 0.01, edge.color = "grey", main = "E. coli transcriptional network"
+)
+plot.igraph(
+  lac.graph, vertex.color = "blue", vertex.size = 10, vertex.label = NA,
+  arrow.size = 0.01, edge.color = "grey", main = "Lac-* subset of E. coli's TN"
+)
 ```
 
 ```{r activated, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
 plot.igraph(act.graph.pruned, arrow.size = 1, mark.expand = 5)
 ```
+              
 DNA sequences which affect the rate of transcription act by binding 
 regulatory proteins (*transcription factors* **TF**). 
 These have a modular structure with different domains which have
