@@ -315,64 +315,98 @@ If transcription factors can be controlled by other transcription factors, we ul
 "*cognitive engine*" of the cell.
 **maybe say that this is the best?**
 
+\newpage
 ## Transciptional Networks
 
-```{r libs, warning=FALSE, message=FALSE}
+To further illustrate th
+```{r libs, message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
 gene.names <- read_delim(
   "data/coliInterFullNames.txt", delim=" ", 
   col_types =  cols(X1="i", X2="c", X3="_"),
   col_names = c("num", "name")
 )
-head(gene.names, 3)
 ```
 
-```{r lac.selec, tidy=TRUE}
+```{r lac.selec, include=FALSE, tidy=TRUE}
 lac <- gene.names %>% filter(str_detect(name, "lac"))
-knitr::kable(lac)
+#knitr::kable(lac)
 ```
 
-```{r interactions, tidy=TRUE}
+```{r interactions, include=FALSE, tidy=TRUE}
 interactions <- read_delim(
   "data/coliInterFullVec.txt", delim=" ", 
   col_names = c("operon_n", "tf_n", "reg_type")
 )
-head(interactions, 3)
+#head(interactions, 3)
 ```
 
 
-```{r lac.find}
+```{r lac.find, include=FALSE}
 # Find lac interactions :
 lac.tf <- interactions %>% filter(operon_n %in% lac$num | tf_n %in% lac$num)
-lac.tf
+#lac.tf
 ```
 
-```{r secondary, }
-lac.int.2 <- interactions %>% 
+```{r secondary, include=FALSE}
+lac.deep.inter.num <- interactions %>% 
   filter(operon_n %in% lac.tf$tf_n | # Get all regulations where lac's TFs are targets
              tf_n %in% lac.tf$tf_n   # Get all operons which are co-regulated 
         )                            # i.e. all whose expression is regulated by the same TFs
-dim(lac.int.2)
+#dim(lac.deep.inter.num)
 ```
-```{r naming}
+```{r naming, fig.margin=TRUE, include=FALSE}
 # Prepare the format
-lac.int.2.pregraph <- lac.int.2 %>% 
-  select(tf_n, operon_n, -reg_type) %>%
+lac.deep.inter.names <- lac.deep.inter.num %>% 
+  select(tf_n, operon_n, reg_type) %>%
     left_join(gene.names, by = c("operon_n" = "num"), name = "op_name") %>%
       left_join(gene.names, by = c("tf_n" = "num"), name = "tf_name") %>%
-        transmute(tf_n = name.y, operon_n = name.x)
-head(lac.int.2.pregraph)
+        transmute(tf_n = name.y, operon_n = name.x, reg_type = reg_type)
+
+# The data's annotation specifies: 1 activator, 2 repressor, 3 dual.
+lac.deep.activated <- lac.deep.inter.names %>% filter(reg_type %in% c(1, 3))
+lac.deep.repressed <- lac.deep.inter.names %>% filter(reg_type %in% c(2, 3))
 ```
 
-```{r the.graph, message=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.align="c", fig.height=10}
+```{r the.graph, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
 library(igraph)
 
-# Create the graph 
-lac.graph <- graph_from_edgelist(as.matrix(lac.int.2.pregraph), directed = T)
-# Remove isolated nodes
-isolated.nodes <- which(degree(lac.graph) == 0)
-lac.graph.pruned <- delete.vertices(lac.graph, isolated.nodes)
-plot.igraph(lac.graph.pruned, arrow.size = 1, mark.expand = 5, vertex.color = "yellow")
+lac.deep.pregraph <- lac.deep.inter.names %>% select(tf_n, operon_n)
+lac.act.pregraph <- lac.deep.activated %>% select(tf_n, operon_n) 
+lac.rep.pregraph <- lac.deep.repressed %>% select(tf_n, operon_n) 
+
+# Create the graphs
+lac.graph <- graph_from_edgelist(as.matrix(lac.deep.pregraph), directed = T)
+act.graph <- graph_from_edgelist(as.matrix(lac.act.pregraph), directed = T)
+rep.graph <- graph_from_edgelist(as.matrix(lac.rep.pregraph), directed = T)
+
+prune_graph <- function(x) delete.vertices(x, which(degree(x) == 0)) 
+
+# Prune graphs (remove isolated nodes)
+lac.graph.pruned <- prune_graph(lac.graph)
+act.graph.pruned <- prune_graph(act.graph)
+rep.graph.pruned <- prune_graph(rep.graph)
+
+#isolated.nodes <- which(degree(lac.graph) == 0)
+#lac.graph.pruned <- delete.vertices(lac.graph, isolated.nodes)
+```
+
+```{r activated, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
+plot.igraph(act.graph.pruned, arrow.size = 1, mark.expand = 5)
+```
+DNA sequences which affect the rate of transcription act by binding 
+regulatory proteins (*transcription factors* **TF**). 
+These have a modular structure with different domains which have
+specific functions such as DNA binding or transcriptional activation.
+Transcription factors can be grouped into families with related DNA binding domains.
+As previously presented in the operon regulation table, TFs can be either activators
+or repressors.
+Inhibitory TFs can repress transcription either indirectly by blocking the effect
+of a positively acting factor or directly via the basal transcription complex.
+
+
+```{r repressed, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
+plot.igraph(rep.graph.pruned, arrow.size = 1, mark.expand = 5)
 ```
 
 ## Transcriptional Control: Chromatin Structure
