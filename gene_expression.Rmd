@@ -23,7 +23,7 @@ nocite: '@*'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 \newpage
-## Introduction
+# The cell's congitive problem
 
 The genetic alphabet is a simple one, consisting of just 4 letters, but it makes
 up for all lifeforms known to humanity. Genes are at the centre of 
@@ -50,7 +50,6 @@ which allows the gene to be switched "on" or "off".
 faire l'introduction après.
 
 
-## The cell's congitive problem
 
 The regulation of gene expression is thus, the dynamic link between the quasi
 static information contained in the genome and the vast array of internal metabolic
@@ -62,7 +61,7 @@ Talk about cellular differentiation, leading to the formation of tissues, organs
 and a full coordinated and integrated organism.
 
 \newpage
-## How to regulate the response ?
+# How to regulate the response 
 
 ### Gene loss 
 
@@ -108,7 +107,6 @@ organisms and oncogene amplification in some cancer cells.
 
 [^1]: Add the reference 
 
-### DNA REARRANGEMENT (perhaps not?)
 
 Both _gene amplification_ and _gene loss_ are possible mechanisms of gene regulation,
 but as previously stated, they seldom happen in specific contexts. 
@@ -118,7 +116,7 @@ multicellular eukaryotes, having no validity in unicellular organisms.
 An example of gene expression as a response
 to external stimuli is the case of the _lac operon_ of _E. coli_. 
 In a study of a wide range of yeast proteins and mARNs, these two generally 
-had a strong positive correlation. These where measured via two-dimensional
+had a strong positive correlation. These were measured via two-dimensional
 gel electrophoresis and a gene chip methods respectively.
 
 From this brief discussion and the positive correlation of
@@ -128,8 +126,7 @@ subset of all the genes ubiquitously present. **The key to gene expression must
 lie therefore in the process of _transcription_**.
 
 
-
-### Transcription
+## Transcription
 
 Some details about transcription differ between eukaryotes and prokaryotes.
 These will be treated in their respective sections, but in general
@@ -139,8 +136,6 @@ elongation of RNA, and termination.
 Any of these individual steps may be regulated, but in practice, 
 regulation of certain steps is much more common than the regulation of others.
 
-Transcription must be therefore 
-explicación a grosso modo de la transcripción
 
 ## Procaryotic Transcription
 
@@ -217,24 +212,10 @@ These are differentiated based on the repression/induction behaviour they exhibi
 |---------------------------|-----------------------------|---------------------------|-----------------------------|
   | An activator protein turns ON transcription in response to a stimulus/condition | An activator protein is inactivated in response to a stimulus/condition, turning transcription OFF | A repressor protein is inactivated in response to a stimulus/condition, turning transcription turns ON | A repressor protein turns transcription turns OFF in response to a stimulus/condition |
 
-\begin{wrapfigure}{R}{5.5cm}
-  \caption{Comparison of regulatory mechanisms}\label{wrap-fig:1}
-  \includegraphics[width=5.5cm]{figures/two_mechanisms}
-  \vspace{-270pt} % This removes the white box on the second page
-\end{wrapfigure}
 
-Two common regulatory mechanisms serve two separate needs. 
-For an efficient response (one requiring less energy) the gene is often
-regulated at the level of transcription. 
-When a rapid response is needed, a precursor protein is produced in advance and
-then rapidly converted to an active protein when the conditions warrant.
-
-hablar a detalle, AK lectures
-
-\newpage
 ## Eucaryotic Transcription
 
-Eukaryotic organisms can be much more complex than prokaryotic ones. 
+Eukaryotic organisms can be much more complex than prokaryotes. 
 This can be easily noted given that in multicellular eukaryotic organisms, 
 cells undergo differentiation to acquire specific morphological and 
 physiological characteristics. 
@@ -252,7 +233,8 @@ diverges from that of its prokaryotic counterpart.
 
 ![Schematic representation of an eukaryotic gene](figures/eukarya1)
 
-Analogously to prokaryotes, eukaryotic genes contain regulatory sections and coding sections.
+Analogously to prokaryotes, eukaryotic genes contain regulatory 
+sections and coding sections.
 Nonetheless, the coding region of an eukaryotic gene is not the DNA equivalent
 of the final mRNA transcript. 
 The coding part of the gene contains interspersed coding and non-coding DNA fragments. 
@@ -302,9 +284,139 @@ GTFs and Pol II then form the _preinitiation complex_ (**PIC**) by protein-prote
 interactions. 
 An important remark is that experimental evidence shows that these
 known GTFs are insufficient to transcribe DPE[^a]-containing genes. 
-In addition to this, it has been founf that TBP paralogues are involved in 
+In addition to this, it has been found that TBP paralogues are involved in 
 distinct biological processes, such as embryonic development, differentiation 
 and morphogenesis.
+
+## Transcriptional Regulation
+
+Gene expression is primarily controlled at the level of transcription by 
+regulating which genes should be copied into RNA in any situation. 
+The major control point is at transcriptional initiation when the DNA
+begins to be copied into RNA. 
+Many cases of regulation at transcriptional elongation also exist. 
+This is thus a secondary mechanism of transcriptional regulation worth
+mentioning.
+
+## Transcription factors
+DNA sequences which affect the rate of transcription act by binding 
+regulatory proteins (*transcription factors* **TF**). 
+These have a modular structure with different domains which have
+specific functions such as DNA binding or transcriptional activation.
+Transcription factors can be grouped into families with related DNA binding domains.
+As previously presented in the operon regulation table, TFs can be either activators
+or repressors.
+Inhibitory TFs can repress transcription either indirectly by blocking the effect
+of a positively acting factor or directly via the basal transcription complex.
+
+Transcription factors can themselves be regulated by controlling their synthesis
+or their activity. 
+If transcription factors can be controlled by other transcription factors, we ultimately have a big transcriptional network which represents the 
+"*cognitive engine*" of the cell.
+**maybe say that this is the best?**
+
+## Transciptional Networks
+
+```{r libs, warning=FALSE, message=FALSE}
+library(tidyverse)
+gene.names <- read_delim(
+  "data/coliInterFullNames.txt", delim=" ", 
+  col_types =  cols(X1="i", X2="c", X3="_"),
+  col_names = c("num", "name")
+)
+head(gene.names, 3)
+```
+
+```{r lac.selec, tidy=TRUE}
+lac <- gene.names %>% filter(str_detect(name, "lac"))
+knitr::kable(lac)
+```
+
+```{r interactions, tidy=TRUE}
+interactions <- read_delim(
+  "data/coliInterFullVec.txt", delim=" ", 
+  col_names = c("operon_n", "tf_n", "reg_type")
+)
+head(interactions, 3)
+```
+
+
+```{r lac.find}
+# Find lac interactions :
+lac.tf <- interactions %>% filter(operon_n %in% lac$num | tf_n %in% lac$num)
+lac.tf
+```
+
+```{r secondary, }
+lac.int.2 <- interactions %>% 
+  filter(operon_n %in% lac.tf$tf_n | # Get all regulations where lac's TFs are targets
+             tf_n %in% lac.tf$tf_n   # Get all operons which are co-regulated 
+        )                            # i.e. all whose expression is regulated by the same TFs
+dim(lac.int.2)
+```
+```{r naming}
+# Prepare the format
+lac.int.2.pregraph <- lac.int.2 %>% 
+  select(tf_n, operon_n, -reg_type) %>%
+    left_join(gene.names, by = c("operon_n" = "num"), name = "op_name") %>%
+      left_join(gene.names, by = c("tf_n" = "num"), name = "tf_name") %>%
+        transmute(tf_n = name.y, operon_n = name.x)
+head(lac.int.2.pregraph)
+```
+
+```{r the.graph, message=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.align="c", fig.height=10}
+library(igraph)
+
+# Create the graph 
+lac.graph <- graph_from_edgelist(as.matrix(lac.int.2.pregraph), directed = T)
+# Remove isolated nodes
+isolated.nodes <- which(degree(lac.graph) == 0)
+lac.graph.pruned <- delete.vertices(lac.graph, isolated.nodes)
+plot.igraph(lac.graph.pruned, arrow.size = 1, mark.expand = 5, vertex.color = "yellow")
+```
+
+## Transcriptional Control: Chromatin Structure
+
+So far, we have discussed gene expression regulation by means of transcriptional
+control. 
+This directly addresses the first presented _cognitive problem of the cell_.
+By selectively transcribing the needed genes, cells can successively 
+(or immediately in the case of prokaryotes) translate mRNA into proteins
+generating a coherent response to external stimuli and their current metabolic state.
+There is however a question that remains unanswered. 
+How do eukaryotic cells differentiate during embryonic development?
+Furthermore, once differentiated how do cells commit to a particular lineage?
+This evidently requires additional levels of control. 
+Other mechanisms are needed to explain the persistence
+of the aforementioned differentiation.
+This appears to be a _long-term memory_, contrary to the quasi immediate
+functioning of transcriptional regulation.
+
+These long-term changes which allow a cell to become and remain committed to a 
+particular pattern of gene expression which determines its lineage involve 
+alterations in the chromatin structure. 
+These changes allow switching between the tightly-packed solenoid structure 
+to the more open conformation. 
+With these changes, active (or potentially) genes exhibit undermethylation 
+on specific C residues of the DNA. 
+Surprisingly there is evidence that these modifications, although stable,
+are not irreversible.
+A clear example is the previously mentioned cloning of Dolly the sheep.
+If these changes were permanent, this experiment would have not produced 
+a healthy clone. 
+
+
+\begin{wrapfigure}{R}{5.5cm}
+  \caption{Comparison of regulatory mechanisms}\label{wrap-fig:1}
+  \includegraphics[width=5.5cm]{figures/two_mechanisms}
+  \vspace{-270pt} % This removes the white box on the second page
+\end{wrapfigure}
+
+Two common regulatory mechanisms serve two separate needs. 
+For an efficient response (one requiring less energy) the gene is often
+regulated at the level of transcription. 
+When a rapid response is needed, a precursor protein is produced in advance and
+then rapidly converted to an active protein when the conditions warrant.
 
 ## Transcriptional networks, current issues, data mining, etc
 
