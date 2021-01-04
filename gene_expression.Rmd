@@ -325,9 +325,8 @@ of a positively acting factor or directly via the basal transcription complex.
 
 Transcription factors can themselves be regulated by controlling their synthesis
 or their activity. 
-If transcription factors can be controlled by other transcription factors, we ultimately have a big transcriptional network which represents the 
+If transcription factors can be controlled by other transcription factors, we ultimately have a big *transcriptional network* (**TN**) which represents the 
 "*cognitive engine*" of the cell.
-
 
 
 \newpage
@@ -390,9 +389,28 @@ act.graph.pruned <- prune_graph(act.graph)
 rep.graph.pruned <- prune_graph(rep.graph)
 ```
 
+There is only a finite number of different 
+transcription factors in a cell. 
+Therefore a transcriptional network provides a compact internal representation 
+of the cell's metabolic state and its environment. 
+This is as one would expect a natural consequence of evolution.
+Throughout generations, only the internal representations which symbolise 
+cellular states of uttermost importance are kept. 
+The "importance" of a representation i.e. a transcriptional network state and 
+its transcription factors could be defined as a function of the cell's ability
+to survive given the transcriptional network.
+
 To better understand the aforementioned cell's "*cognitive engine*", 
-we need to present some brief definitions.
-In transcriptional networks genes are represented by nodes. 
+we need to present some brief definitions of the tools and formalisms used
+to study TN.
+Transcriptional networks can be represented using many different tools.
+However, graphs are particularly useful to represent the interconnected
+nature of the network.
+This is not only because our brains can easily process their image as a snapshot.
+It is also useful due to the variety of graph analysis algorithms that exists.
+These can be used to search for different recurring network motifs
+which elucidate a coordinated patterns of response to stimuli.
+In these graphs, genes are represented by nodes. 
 The links between the nodes are the transcriptional relationships.
 These tie together target genes and the genes which
 encode their transcription factors. 
@@ -401,35 +419,73 @@ This means that the protein encoded by gene $X$ is a transcription factor
 which can bind to $Y$'s promoter in order to activate or repress its 
 translation, which ultimately implies controlling its expression.
 
+
 ## E. coli's transcriptional network
-```{r full.network, echo=FALSE, fig.margin=TRUE}
+We present the following example of the graph representing
+E. coli's transcriptional network to further clarify the
+concepts discussed so far. 
+This work is based on the exercises of the course 
+_Modélisation des systèmes et réseaux biologiques_ of Paris-Saclay University, 
+by Professor Gaëlle Lelandais. 
+We used [Pofessor Uri Alon's **_dataset_**](http://www.weizmann.ac.il/mcb/UriAlon/e-coli-transcription-network) 
+of the transcriptional network of E. coli (Weizmann Institute of Science).  
+The source code used to create the figures can be found [**_here_**](https://github.com/gmagannaDevelop/MiniBio/blob/main/gene_expression.Rmd).
+
+We will focus on the genes which are _connected_ in the graph to the lac operon
+and its transcription factors. 
+<!-- The methodology could be described _grosso modo_ as --> 
+
+```{r full.network, echo=FALSE, fig.margin=TRUE, fig.cap="Side by side view of a transcriptional network and a subset of it"}
 full.graph <- graph_from_edgelist(as.matrix(full.inter.pregraph), directed = T)
 par(mfrow = c(1,2))
 plot.igraph(
   full.graph, vertex.color = "green", vertex.size = 5, vertex.label = NA,
-  arrow.size = 0.01, edge.color = "grey", main = "E. coli transcriptional network"
+  arrow.size = 0.01, edge.color = "grey", main = "Full"
 )
 plot.igraph(
   lac.graph, vertex.color = "blue", vertex.size = 10, vertex.label = NA,
-  arrow.size = 0.01, edge.color = "grey", main = "Lac-* subset of E. coli's TN"
+  arrow.size = 0.01, edge.color = "grey", main = "Lac-related subset"
 )
 ```
 
-```{r activated, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
+\newpage
+## Genes activated by _CRP_
+By searching the files containing all transcriptional interactions, 
+we could identify a multitude of genes which share a common transcription 
+factor _CRP_ with _lacZYA_. 
+Afterwards we could apply filters to the resulting data frame, to select genes
+that were activated or repressed by this transcription factor. 
+We present the following graph which shows genes whose transcription 
+is activated by the same transcription factor _CRP_. 
+
+The search query _CRP_ in [RegulonDB](http://regulondb.ccg.unam.mx) returns 
+numerous results, indicating that this gene is involved in many processes.
+Looking at _Multifun Terms (GenProtEC)_ and _Gene Ontology Terms (GO)_,
+known and expected functions are found: RNA related, transcription related. Regulation at transcriptional level both as a repressor and an activator. DNA binding, protein binding, cAMP binding.
+
+```{r activated, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE, fig.cap="crp and its many target genes"}
 plot.igraph(act.graph.pruned, arrow.size = 1, mark.expand = 5)
 ```
               
-DNA sequences which affect the rate of transcription act by binding 
-regulatory proteins (*transcription factors* **TF**). 
-These have a modular structure with different domains which have
-specific functions such as DNA binding or transcriptional activation.
-Transcription factors can be grouped into families with related DNA binding domains.
-As previously presented in the operon regulation table, TFs can be either activators
-or repressors.
-Inhibitory TFs can repress transcription either indirectly by blocking the effect
-of a positively acting factor or directly via the basal transcription complex.
+Gene _malS_ has a function which clearly aligns with _lacZYA_. 
+The rise of the concentration of _cAMP_ in the citoplasm means that
+the cell is running low on energy. 
+Besides using lactose, E. coli can alternatively degrade and use polysaccharides.
+This is the function of the protein encoded by _malS_ which according to 
+RegulonDB has hydrolase activity, acting on glycosyl bonds.
+On the other hand _udp_ encodes a protein
+which facilitates nucleotide and nucleoside conversions in central intermediary 
+metabolism, with a catabolic role. 
 
+We hace to keep in mind, however, that this is only a partial view of 
+the transcriptional network. 
+So far this database contains 577 interactions, but further studies could 
+reveal new transcription factors. Each one of these co-expressed genes
+might be subject to the influence of other transcription factor which ultimately 
+determine their level of expression.
 
+\newpage
+## Genes repressed by _CRP_
 ```{r repressed, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
 plot.igraph(rep.graph.pruned, arrow.size = 1, mark.expand = 5)
 ```
