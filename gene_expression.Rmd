@@ -486,11 +486,38 @@ determine their level of expression.
 
 \newpage
 ## Genes repressed by _CRP_
-```{r repressed, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE}
+Following the same procedure, we filtered out _activator_ interactions
+involving both _crp_ and _lacZYA_. This yields the converse scenario in which
+the transcription of $\beta$-galactosidase is repressed.
+
+```{r repressed, echo=FALSE, fig.align="c", fig.fullwidth=TRUE, fig.height=10, message=FALSE, warning=FALSE, fig.cap="Genes repressed by lacZYA's activator crp"}
 plot.igraph(rep.graph.pruned, arrow.size = 1, mark.expand = 5)
 ```
 
-## Transcriptional Control: Chromatin Structure
+We see for example _fumB_, the gene for fumarase B. This protein is important
+in energy metabolism, namely in the tricarboxylic acid cycle and fermentation.
+Its goal is to catalyse reactions which intervene in 
+generation of precursor metabolites and energy.
+If _cAMP_ is building up in the cell, it may be a good idea to slow down 
+these processes in order to regain a higher energetic state.
+
+Moving on to the previously presented _lacZYA_, we see that _lacI_ has
+a repressor effect on it. 
+This means that the gene is not only subject to positive regulation by 
+_crp_ but also to negative regulation by _lacI_. 
+If we were to analyse each one of the interactions that involve these genes
+we could start following all relationships in order to build a local network of 
+tightly related biological processes.
+
+More importantly, searching all genes connected to _crp_ gave us a graph 
+which strongly resembles the _dense overlapping regulon_ exposed by Uri Alon _et al_.
+Seeing on the first figure all the genes whose expression is favoured by a common
+transcription factor (ultimately a common signal) and those simultaneously repressed
+gives a perfect image of the _coordinated response_ to stimuli created by the 
+cell's _cognitive engine_, its transcriptional network.
+
+\newpage
+# Gene expression: Chromatin Structure
 
 So far, we have discussed gene expression regulation by means of transcriptional
 control. 
@@ -521,6 +548,25 @@ If these changes were permanent, this experiment would have not produced
 a healthy clone. 
 
 
+# Gene regulation and human disease
+
+Many human diseases involve alterations in gene expression caused by changes in
+transcription factors, co-activators and chromatin-modifying factors or 
+post-transcriptional processes. Widespread changes in gene regulation are 
+seen in cancer resulting from the the enhanced expression/activity of oncogenes
+or the reduced expression of anti-oncogenes.
+
+A number of oncogenes and anti-oncogenes encode transcription factors which 
+play a central role in the cell's metabolism, irritability and ultimately 
+its life. Taking into account how interconnected transcriptional networks are,
+the introduction or suppression of a couple of nodes could significantly
+shift its dynamics, resulting in the apparition of the pathological phenotype. 
+
+Even though many drugs already target transcription factors, sometimes
+this mechanism of action was only found after the clinical use.
+They were selected solely on their efficacy. With the advancement of OMICS, 
+drugs are now specifically designed to target particular aspects of gene regulation.
+
 \begin{wrapfigure}{R}{5.5cm}
   \caption{Comparison of regulatory mechanisms}\label{wrap-fig:1}
   \includegraphics[width=5.5cm]{figures/two_mechanisms}
@@ -539,31 +585,6 @@ then rapidly converted to an active protein when the conditions warrant.
 
 [^a]: Downstream Promoter Element
 
-\newpage
-# Glossary
-
-* **Gene**: The unit of inheritance, "a particulate factor that passes unchanged from generation to generation".
-
-* **Deoxyribonucleic acid**: The chemical constituents of the gene segments, comprising nucleotides and a sugar phosphate
-backbone, incorporated into a double helical structure.
-
-* **Nucleotide**: The building blocks of the gene that specify the genetic alphabet. There are two types of nucleotide, purines and
-pyrimidines.
-* **Pyrimidines**: A nitrogenous base with a six membered ring eg Cytosine and Thymine.
-* **Purines**: A nitrogenous base with fused 5 and 6 membered rings eg Adenine and Guanine.
-* **Genotype**: The genetic composition of an individual.
-* Phenotype: The physical expression of the genotype.
-* **Allele**: the particular form of the gene (all genes except genes on the Y chromosome have 2 copies in humans).
-* **Homozygote**: both alleles of a gene inherited from maternal and paternal are identical for the trait of a particular gene.
-* **Heterozygote**: The alleles of a gene inherited from maternal and paternal are different.
-* **Dominant**: the presence of one allele is sufficient to provide the phenotype of the individual.
-* **Recessive**: the presence of both alleles is required to provide the phenotype of the individual.
-* **Locus**: The physical position of the gene.
-* **Polymorphism**: a change at the nucleotide level between the genomes of two individual at a specific locus. This may take
-the form of a single base change, or a change in the number of repetitive elements at this locus. Many polymorphisms
-are neutral, having no definable phenotype.
-* **Eukaryotic**: referring to the genome of multicellular organisms, from yeast to humans genes are interrupted by introns.
-* **Prokaryotic**: referring to the single cell organisms such as bacteria, archaebacteria etc, no introns present.
 
 \newpage
 # References
